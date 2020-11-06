@@ -1,0 +1,32 @@
+{
+  "name": "Flow State",
+  "background": {
+    "scripts": ["background.bundle.js"]
+  },
+  "description": "Prevent attention switching while doing deep work on the web",
+  "permissions": ["storage"],
+  "manifest_version": 2,
+  "icons": {
+    "16": "icon-16.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
+  },
+  "browser_action": {
+    "default_icon": "icon-16.png",
+    "default_title": "Extension Starter Kit",
+    "default_popup": "popup.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "chrome_url_overrides": {
+    "newtab": "options.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://example.com/"],
+      "js": ["example.bundle.js"]
+    }
+  ]
+}
