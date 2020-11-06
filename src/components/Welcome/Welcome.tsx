@@ -9,8 +9,10 @@ function Welcome() {
   return (
     <div className="Welcome container-fluid my-5">
       <Logo />
-      <h1 className="text-center mb-5">Welcome to Flow State!</h1>
-      Open a new tab to get started.
+      <div className="text-center mb-5">
+      <h1>Welcome to Flow State!</h1>
+      <h3>Open a new tab to get started.</h3>
+      </div>
     </div>
   );
 }

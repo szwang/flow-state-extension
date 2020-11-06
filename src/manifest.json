@@ -13,7 +13,7 @@
   },
   "browser_action": {
     "default_icon": "icon-16.png",
-    "default_title": "Extension Starter Kit",
+    "default_title": "Flow State",
     "default_popup": "popup.html"
   },
   "options_ui": {
