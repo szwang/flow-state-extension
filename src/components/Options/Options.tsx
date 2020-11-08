@@ -1,103 +1,71 @@
 import React, { useState, useEffect } from 'react';
 
 import SessionInProgress from './SessionInProgress';
+import SessionEdit from './SessionEdit';
+
 import './Options.scss';
 declare var chrome: any;
 
-function retrieveSites(): Promise<Array<string>> {
-  return new Promise((resolve) => {
-    chrome.storage.sync.get(['sites'], ({ sites }: Array<string>) => {
-      console.log(sites);
-      resolve(sites);
-    });
-  });
-}
-
-function startSession(intention: string, duration: string) {
-  const currentTime = Date.now();
-  const durationInt = parseInt(duration);
-  const endTime = currentTime + durationInt;
-
-  chrome.storage.sync.set({
-    active: true,
-    intention,
-    startTime: currentTime,
-    duration: durationInt,
-    endTime,
-  });
+export interface SessionData {
+  endTime: number | null;
+  intention: string;
+  sites: Array<string>;
 }
 
 function Options() {
-  const [sessionState, setSessionState] = useState(null);
-  const [sites, setSites] = useState(['']);
-  const [newSite, setNewSite] = useState('');
-  const [intention, setIntention] = useState('');
-  const [duration, setDuration] = useState('0');
-
-  const addSite = async () => {
-    const newSitesList = [...sites, newSite];
-    chrome.storage.sync.set({ sites: newSitesList }, () => {
-      setSites(newSitesList);
-      setNewSite('');
-    });
-  };
-
-  useEffect(() => {
-    chrome.storage.sync.get(['active'], ({ active }: Array<string>) => {
-      setSessionState(active);
-    });
+  const [active, setActive] = useState<boolean | null>(null);
+  const [sessionData, setSessionData] = useState<SessionData>({
+    endTime: null,
+    intention: '',
+    sites: [],
   });
 
-  // Fetch latest sites
+  // On mount, retrieve state of the session
   useEffect(() => {
-    const getSites = async () => {
-      const sites = await retrieveSites();
-      console.log(sites);
-      setSites(sites);
-    };
-    getSites();
+    chrome.storage.sync.get(null, (data) => {
+      const { endTime, sites, intention } = data;
+      // no session in progress
+      console.log('DATA', data, endTime);
+      if (!endTime) {
+        setSessionData({
+          ...sessionData,
+          sites: sites || [],
+        });
+        setActive(false);
+      } else if (endTime < Date.now()) {
+        // reset settings
+        chrome.storage.sync.set({ endTime: null, intention: null });
+        setSessionData({
+          ...sessionData,
+          sites: sites || [],
+        });
+        setActive(false);
+      } else {
+        // session in progress
+        setSessionData({
+          sites,
+          intention,
+          endTime,
+        });
+        setActive(true);
+      }
+    });
   }, []);
 
-  if (sessionState === null) {
+  console.log(active);
+  // Render loading state
+  if (active === null) {
     return <div></div>;
-  } else if (sessionState === true) {
-    return <SessionInProgress intention={intention} />;
   }
-
-  return (
-    <div className="Options container-fluid my-5">
-      <div>
-        <div>
-          I want to focus on{' '}
-          <input
-            value={intention}
-            onChange={(e) => setIntention(e.target.value)}
-          ></input>
-        </div>
-        <div>
-          Websites:
-          <input
-            value={newSite}
-            onChange={(e) => setNewSite(e.target.value)}
-          ></input>{' '}
-          <button onClick={addSite}>add</button>
-          {sites && sites.map((site) => <li>{site}</li>)}
-        </div>
-        <div>
-          Time set{' '}
-          <input
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-          ></input>
-        </div>
-        <div>
-          <button onClick={() => startSession(intention, duration)}>
-            Start
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+  // Render session intention and countdown
+  if (active) {
+    return <SessionInProgress {...sessionData} />;
+  } else {
+    // Render session settings
+    return (
+      <SessionEdit sessionData={sessionData} updateSession={setSessionData} />
+    );
+  }
 }
 
 export default Options;
