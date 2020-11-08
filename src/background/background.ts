@@ -8,9 +8,9 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
       !sites.find((domain) => hostname.includes(domain)) &&
       endTime > Date.now()
     ) {
-      alert('site is blocked!!');
+      chrome.tabs.executeScript(tabId, { file: 'clearPage.bundle.js' });
     } else {
-      alert('site is not blocked');
+      // alert('site is not blocked');
     }
   });
 });

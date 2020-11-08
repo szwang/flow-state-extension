@@ -52,7 +52,6 @@ function Options() {
     });
   }, []);
 
-  console.log(active);
   // Render loading state
   if (active === null) {
     return <div></div>;

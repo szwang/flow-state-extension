@@ -47,7 +47,7 @@ module.exports = (env, argv) => {
       popup: './src/components/Popup/index.tsx',
       options: './src/components/Options/index.tsx',
       welcome: './src/components/Welcome/index.tsx',
-      siteFilter: './src/contentScripts/siteFilter.ts',
+      clearPage: './src/contentScripts/clearPage.ts',
     },
 
     // Use built-in optimizations based on mode

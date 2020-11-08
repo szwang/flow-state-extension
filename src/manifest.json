@@ -25,12 +25,5 @@
   },
   "chrome_url_overrides": {
     "newtab": "options.html"
-  },
-  "content_scripts": [
-    {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["siteFilter.bundle.js"],
-      "run_at": "document_end"
-    }
-  ]
+  }
 }
