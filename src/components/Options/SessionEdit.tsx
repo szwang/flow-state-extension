@@ -48,7 +48,7 @@ function SessionEdit({ sessionData, updateSession }: Props) {
   // start session
   const handleStartSessionClick = () => {
     startSession(intention, duration, sites);
-    location.reload();
+    location.reload(); // eslint-disable-line no-restricted-globals
   };
 
   return (
