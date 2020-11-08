@@ -16,10 +16,10 @@
     "type": "git",
     "url": "git+https://github.com/dkthehuman/extension-starter-kit.git"
   },
-  "author": "DK",
   "bugs": {
     "url": "https://github.com/dkthehuman/extension-starter-kit/issues"
   },
+  "test": "jest",
   "homepage": "https://github.com/dkthehuman/extension-starter-kit#readme",
   "devDependencies": {
     "@babel/cli": "^7.12.1",
@@ -29,6 +29,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.9.0",
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
+    "@types/enzyme": "^3.10.8",
     "@types/jest": "^26.0.15",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
@@ -42,6 +43,9 @@
     "copy-webpack-plugin": "^5.1.1",
     "crx": "^5.0.1",
     "css-loader": "^3.5.3",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
+    "enzyme-to-json": "^3.6.1",
     "eslint": "^6.8.0",
     "eslint-config-react-app": "^5.2.1",
     "eslint-loader": "^3.0.4",
@@ -68,6 +72,7 @@
     "zip-webpack-plugin": "^3.0.0"
   },
   "dependencies": {
+    "@types/enzyme-adapter-react-16": "^1.0.6",
     "bootstrap": "^4.5.0",
     "jquery": "^3.5.0",
     "react": "^16.13.1",
