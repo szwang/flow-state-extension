@@ -49,7 +49,7 @@ function Options() {
         setActive(true);
       }
     });
-  }, []);
+  }, [sessionData]);
 
   // Render loading state
   if (active === null) {
