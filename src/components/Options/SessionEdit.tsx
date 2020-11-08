@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 import type { SessionData } from './Options';
-
 import './Options.scss';
+
 declare var chrome: any;
 
 function startSession(

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import SessionInProgress from './SessionInProgress';
 import SessionEdit from './SessionEdit';
-
 import './Options.scss';
+
 declare var chrome: any;
 
 export interface SessionData {
@@ -22,7 +22,7 @@ function Options() {
 
   // On mount, retrieve state of the session
   useEffect(() => {
-    chrome.storage.sync.get(null, (data) => {
+    chrome.storage.sync.get(null, (data: SessionData) => {
       const { endTime, sites, intention } = data;
       // no session in progress
       if (!endTime) {

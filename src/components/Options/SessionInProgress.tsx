@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+
+import Options from './Options';
+import type { SessionData } from './Options';
 import './Options.scss';
 
-interface Props {
-  endTime: number;
-  intention: string | null;
-  sites: Array<string>;
-}
+type Props = SessionData;
 
 function SessionInProgress({ endTime, intention, sites }: Props) {
+  if (!endTime) return <Options />;
+
   const remainingDuration = Math.round((endTime - Date.now()) / 60000);
   return (
     <div>
