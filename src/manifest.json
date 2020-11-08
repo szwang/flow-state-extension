@@ -4,15 +4,18 @@
     "scripts": ["background.bundle.js"]
   },
   "description": "Prevent attention switching while doing deep work on the web",
-  "permissions": ["storage"],
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab",
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>",
+    "https://*/*"
+  ],
+
   "manifest_version": 2,
-  "icons": {
-    "16": "icon-16.png",
-    "48": "icon-48.png",
-    "128": "icon-128.png"
-  },
   "browser_action": {
-    "default_icon": "icon-16.png",
     "default_title": "Flow State",
     "default_popup": "popup.html"
   },
@@ -25,8 +28,9 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://example.com/"],
-      "js": ["example.bundle.js"]
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["siteFilter.bundle.js"],
+      "run_at": "document_end"
     }
   ]
 }

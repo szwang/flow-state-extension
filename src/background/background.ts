@@ -1,13 +1,16 @@
-import { browser } from 'webextension-polyfill-ts';
+// close tabs
+chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
+  const url = changeInfo.pendingUrl || changeInfo.url;
+  const hostname = new URL(url).hostname;
 
-import 'images/icon-16.png';
-import 'images/icon-48.png';
-import 'images/icon-128.png';
-
-browser.runtime.onInstalled.addListener(async ({ reason }) => {
-  if (reason === 'install') {
-    return browser.tabs.create({
-      url: browser.runtime.getURL('welcome.html'),
-    });
-  }
+  chrome.storage.sync.get(['sites', 'endTime'], ({ sites, endTime }) => {
+    if (
+      !sites.find((domain) => hostname.includes(domain)) &&
+      endTime > Date.now()
+    ) {
+      alert('site is blocked!!');
+    } else {
+      alert('site is not blocked');
+    }
+  });
 });

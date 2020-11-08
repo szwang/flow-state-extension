@@ -21,8 +21,9 @@ function startSession(
   sites: Array<string>
 ) {
   const currentTime = Date.now();
-  const durationInt = parseInt(duration);
-  const endTime = currentTime + durationInt;
+  // change duration from min to ms
+  const durationMs = parseInt(duration) * 60 * 1000;
+  const endTime = currentTime + durationMs;
 
   chrome.storage.sync.set(
     {
@@ -48,23 +49,37 @@ function SessionEdit({ sessionData, updateSession }: Props) {
   console.log(sessionData);
 
   // input states
-  const [newSite, setNewSite] = useState('');
+  const [siteInput, setSiteInput] = useState('');
   const [duration, setDuration] = useState('0');
 
   // add site to allowlist
   const addSite = async () => {
-    const newSitesList = [...sites, newSite];
+    const newSitesList = [...sites, siteInput];
     // persist new list
     chrome.storage.sync.set({ sites: newSitesList }, () => {
       updateSession({
         ...sessionData,
         sites: newSitesList,
       });
-      setNewSite('');
+      setSiteInput('');
     });
   };
 
-  const handleClickStart = () => {
+  const removeSite = async (index: number) => {
+    const newSitesList = [...sites].splice(index + 1, 1);
+
+    console.log('remove', index, newSitesList);
+    // persist new list
+    chrome.storage.sync.set({ sites: newSitesList }, () => {
+      updateSession({
+        ...sessionData,
+        sites: newSitesList,
+      });
+      setSiteInput('');
+    });
+  };
+
+  const handleStartSessionClick = () => {
     startSession(intention, duration, sites);
   };
 
@@ -83,11 +98,16 @@ function SessionEdit({ sessionData, updateSession }: Props) {
         <div>
           Websites:
           <input
-            value={newSite}
-            onChange={(e) => setNewSite(e.target.value)}
+            value={siteInput}
+            onChange={(e) => setSiteInput(e.target.value)}
           ></input>{' '}
           <button onClick={addSite}>add</button>
-          {sites && sites.map((site, i) => <li key={i}>{site}</li>)}
+          {sites &&
+            sites.map((site, i) => (
+              <li key={i}>
+                {site} <button onClick={() => removeSite(i)}>x</button>
+              </li>
+            ))}
         </div>
         <div>
           Time set{' '}
@@ -97,7 +117,7 @@ function SessionEdit({ sessionData, updateSession }: Props) {
           ></input>
         </div>
         <div>
-          <button onClick={handleClickStart}>Start</button>
+          <button onClick={handleStartSessionClick}>Start</button>
         </div>
       </div>
     </div>

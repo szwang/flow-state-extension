@@ -25,7 +25,7 @@ function getStyleLoaders({ cssOptions = {}, preProcessor } = {}) {
       // Run PostCSS actions
       loader: 'postcss-loader',
       options: {
-        plugins: function() {
+        plugins: function () {
           return [require('autoprefixer')];
         },
       },
@@ -47,7 +47,7 @@ module.exports = (env, argv) => {
       popup: './src/components/Popup/index.tsx',
       options: './src/components/Options/index.tsx',
       welcome: './src/components/Welcome/index.tsx',
-      example: './src/contentScripts/example.ts',
+      siteFilter: './src/contentScripts/siteFilter.ts',
     },
 
     // Use built-in optimizations based on mode
@@ -158,7 +158,7 @@ module.exports = (env, argv) => {
       new CopyWebpackPlugin([
         {
           from: 'src/manifest.json',
-          transform: content => {
+          transform: (content) => {
             const manifest = JSON.parse(content.toString());
             // Use fields from package.json for manifest
             const manifestFields = {
@@ -218,6 +218,6 @@ module.exports = (env, argv) => {
         new ZipPlugin({
           filename: `${packageJson.name}-v${packageJson.version}.zip`,
         }),
-    ].filter(plugin => !!plugin),
+    ].filter((plugin) => !!plugin),
   };
 };
