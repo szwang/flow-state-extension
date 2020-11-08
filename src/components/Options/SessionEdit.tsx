@@ -17,7 +17,7 @@ function SessionEdit({ sessionData, updateSession }: Props) {
 
   // input states
   const [siteInput, setSiteInput] = useState('');
-  const [duration, setDuration] = useState('0');
+  const [duration, setDuration] = useState('5');
 
   // update site list
   const updateSiteList = (sites: Array<string>) => {
