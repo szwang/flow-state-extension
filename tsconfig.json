@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
     // Target latest version of ECMAScript
-    "target": "esnext",
+    // "target": "esnext",
+    "target": "es2018",
     // Generate module code using latest version of ECMAScript
-    "module": "esnext",
-    // Keep JSX as part of output to be consumed by Babel
-    "jsx": "preserve",
+    // "module": "esnext",
+    "module": "commonjs",
+    "jsx": "react",
     // Search under node_modules for non-relative imports.
     "moduleResolution": "node",
     // Base directory to resolve non-relative module names
@@ -15,8 +16,9 @@
     // Enable strictest settings
     "strict": true,
     // Generate corresponding .map file
-    "sourceMap": true
+    "sourceMap": true,
+    "lib": ["es2018", "dom"]
   },
-  "include": ["src", "tests"],
+  "include": ["src"],
   "compileOnSave": false
 }

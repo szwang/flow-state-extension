@@ -1,9 +1,10 @@
 import { retrieveData } from './background';
 
-test('basic', () => {
-  expect(sum()).toBe(0);
-});
-
-test('basic again', () => {
-  expect(sum(1, 2)).toBe(3);
+describe('retrieveData', () => {
+  it('gets sites and endTime keys from chrome storage', () => {
+    retrieveData(() => jest.fn());
+    expect(chrome.storage.sync.get).toHaveBeenCalledTimes(1);
+    const keys = chrome.storage.sync.get.mock.calls[0][0];
+    expect(keys).toEqual(['sites', 'endTime']);
+  });
 });

@@ -14,4 +14,13 @@ module.exports = {
     '@babel/plugin-proposal-nullish-coalescing-operator',
     '@babel/plugin-proposal-optional-chaining',
   ],
+  env: {
+    test: {
+      plugins: [
+        'transform-es2015-modules-commonjs',
+        '@babel/plugin-proposal-class-properties',
+      ],
+      presets: ['@babel/preset-react'],
+    },
+  },
 };
