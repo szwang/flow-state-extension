@@ -1,19 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import SessionInProgress from './SessionInProgress';
-import { SessionData } from './Options';
+import type { SessionData } from './Options';
 
 import './Options.scss';
 declare var chrome: any;
-
-function retrieveSites(): Promise<Array<string>> {
-  return new Promise((resolve) => {
-    chrome.storage.sync.get(['sites'], ({ sites }: Array<string>) => {
-      console.log(sites);
-      resolve(sites);
-    });
-  });
-}
 
 function startSession(
   intention: string,
@@ -32,11 +22,17 @@ function startSession(
       sites,
     },
     () => {
-      chrome.storage.sync.get(null, (data) => {
+      chrome.storage.sync.get(null, (data: SessionData) => {
         console.log('data after set', data);
       });
     }
   );
+}
+
+function writeNewSiteList(sites: Array<string>, stateUpdate: () => void) {
+  chrome.storage.sync.set({ sites }, () => {
+    stateUpdate();
+  });
 }
 
 type Props = {
@@ -46,39 +42,38 @@ type Props = {
 
 function SessionEdit({ sessionData, updateSession }: Props) {
   const { intention, sites } = sessionData;
-  console.log(sessionData);
 
   // input states
   const [siteInput, setSiteInput] = useState('');
   const [duration, setDuration] = useState('0');
 
+  // update site list
+  const updateSiteList = (sites: Array<string>) => {
+    writeNewSiteList(sites, () => {
+      updateSession({
+        ...sessionData,
+        sites: sites,
+      });
+      setSiteInput('');
+    });
+  };
+
   // add site to allowlist
-  const addSite = async () => {
+  const addSite = () => {
     const newSitesList = [...sites, siteInput];
     // persist new list
-    chrome.storage.sync.set({ sites: newSitesList }, () => {
-      updateSession({
-        ...sessionData,
-        sites: newSitesList,
-      });
-      setSiteInput('');
-    });
+    updateSiteList(newSitesList);
   };
 
-  const removeSite = async (index: number) => {
-    const newSitesList = [...sites].splice(index + 1, 1);
-
-    console.log('remove', index, newSitesList);
+  // remove site from allowlist
+  const removeSite = (index: number) => {
+    const newSitesList = [...sites];
+    newSitesList.splice(index, 1);
     // persist new list
-    chrome.storage.sync.set({ sites: newSitesList }, () => {
-      updateSession({
-        ...sessionData,
-        sites: newSitesList,
-      });
-      setSiteInput('');
-    });
+    updateSiteList(newSitesList);
   };
 
+  // start session
   const handleStartSessionClick = () => {
     startSession(intention, duration, sites);
   };
@@ -114,7 +109,8 @@ function SessionEdit({ sessionData, updateSession }: Props) {
           <input
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
-          ></input>
+          ></input>{' '}
+          min
         </div>
         <div>
           <button onClick={handleStartSessionClick}>Start</button>

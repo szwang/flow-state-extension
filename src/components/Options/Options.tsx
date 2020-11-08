@@ -25,7 +25,6 @@ function Options() {
     chrome.storage.sync.get(null, (data) => {
       const { endTime, sites, intention } = data;
       // no session in progress
-      console.log('DATA', data, endTime);
       if (!endTime) {
         setSessionData({
           ...sessionData,
