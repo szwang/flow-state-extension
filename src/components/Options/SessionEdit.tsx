@@ -1,39 +1,11 @@
 import React, { useState } from 'react';
 
+import {
+  startSession,
+  writeNewSiteList,
+} from '../../utils/chromeStorageActions';
 import type { SessionData } from './Options';
 import './Options.scss';
-
-declare var chrome: any;
-
-function startSession(
-  intention: string,
-  duration: string,
-  sites: Array<string>
-) {
-  const currentTime = Date.now();
-  // change duration from min to ms
-  const durationMs = parseInt(duration) * 60 * 1000;
-  const endTime = currentTime + durationMs;
-
-  chrome.storage.sync.set(
-    {
-      intention,
-      endTime,
-      sites,
-    },
-    () => {
-      chrome.storage.sync.get(null, (data: SessionData) => {
-        console.log('data after set', data);
-      });
-    }
-  );
-}
-
-function writeNewSiteList(sites: Array<string>, stateUpdate: () => void) {
-  chrome.storage.sync.set({ sites }, () => {
-    stateUpdate();
-  });
-}
 
 type Props = {
   sessionData: SessionData;
@@ -76,6 +48,7 @@ function SessionEdit({ sessionData, updateSession }: Props) {
   // start session
   const handleStartSessionClick = () => {
     startSession(intention, duration, sites);
+    location.reload();
   };
 
   return (
