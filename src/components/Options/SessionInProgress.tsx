@@ -8,7 +8,7 @@ interface Props {
 }
 
 function SessionInProgress({ endTime, intention, sites }: Props) {
-  const remainingDuration = (endTime - Date.now()) / 60000;
+  const remainingDuration = Math.round((endTime - Date.now()) / 60000);
   return (
     <div>
       You are focused on {intention} for the next {remainingDuration} minutes.
