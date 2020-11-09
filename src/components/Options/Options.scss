@@ -8,6 +8,40 @@
   font-family: 'IBM Plex Mono', serif;
 }
 
+input {
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: groove;
+  text-align: center;
+}
+
 .Options {
-  max-width: 700px;
+}
+
+.Intention {
+  font-size: 50px;
+  text-align: center;
+  padding: 5px;
+}
+
+.Time-sentence {
+  font-size: 30px;
+  padding: 5px;
+  text-align: center;
+}
+
+.Website-list {
+  padding: 5px;
+  text-align: center;
+}
+
+.Start-button {
+  padding: 5px;
+  text-align: center;
+}
+
+.Website-input {
+  text-align: left !important;
+  width: 500px;
 }

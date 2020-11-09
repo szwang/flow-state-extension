@@ -18,7 +18,7 @@ function SessionEdit({ sessionData, updateSession }: Props) {
 
   // input states
   const [siteInput, setSiteInput] = useState('');
-  const [duration, setDuration] = useState('5');
+  const [duration, setDuration] = useState('');
 
   // update site list
   const updateSiteList = (sites: Array<string>) => {
@@ -55,38 +55,48 @@ function SessionEdit({ sessionData, updateSession }: Props) {
   return (
     <div className="Options container-fluid my-5">
       <div>
-        <div>
-          I want to focus on <TextField id="standard-basic" label="Standard" />
-          <input
-            value={intention}
-            onChange={(e) =>
-              updateSession({ ...sessionData, intention: e.target.value })
-            }
-          ></input>
+        <div className="Intention">
+          I want to focus on{' '}
+          <div className="Intention-input">
+            <input
+              placeholder="intention"
+              value={intention}
+              onChange={(e) =>
+                updateSession({ ...sessionData, intention: e.target.value })
+              }
+            />
+          </div>
         </div>
-        <div>
+        <div className="Time-sentence">
           for the next
           <input
+            placeholder="5"
+            type="number"
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
-          ></input>{' '}
+          />
           minutes.
         </div>
-        <div>
-          Websites:
+        <div className="Website-list">
+          <div style={{ fontSize: '20px', fontWeight: 'bold', padding: '5px' }}>
+            Allowed sites:
+          </div>
           <input
+            className="Website-input"
             value={siteInput}
             onChange={(e) => setSiteInput(e.target.value)}
           ></input>{' '}
           <button onClick={addSite}>add</button>
-          {sites &&
-            sites.map((site, i) => (
-              <li key={i}>
-                {site} <button onClick={() => removeSite(i)}>x</button>
-              </li>
-            ))}
+          <div style={{ paddingTop: '10px' }}>
+            {sites &&
+              sites.map((site, i) => (
+                <ul key={i}>
+                  {site} <button onClick={() => removeSite(i)}>x</button>
+                </ul>
+              ))}
+          </div>
         </div>
-        <div>
+        <div className="Start-button">
           <button onClick={handleStartSessionClick}>Start</button>
         </div>
       </div>
