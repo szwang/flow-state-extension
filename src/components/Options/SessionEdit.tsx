@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import TextField from '@material-ui/core/TextField';
 
 import {
   startSession,
@@ -55,13 +56,21 @@ function SessionEdit({ sessionData, updateSession }: Props) {
     <div className="Options container-fluid my-5">
       <div>
         <div>
-          I want to focus on{' '}
+          I want to focus on <TextField id="standard-basic" label="Standard" />
           <input
             value={intention}
             onChange={(e) =>
               updateSession({ ...sessionData, intention: e.target.value })
             }
           ></input>
+        </div>
+        <div>
+          for the next
+          <input
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+          ></input>{' '}
+          minutes.
         </div>
         <div>
           Websites:
@@ -76,14 +85,6 @@ function SessionEdit({ sessionData, updateSession }: Props) {
                 {site} <button onClick={() => removeSite(i)}>x</button>
               </li>
             ))}
-        </div>
-        <div>
-          Time set{' '}
-          <input
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-          ></input>{' '}
-          min
         </div>
         <div>
           <button onClick={handleStartSessionClick}>Start</button>
